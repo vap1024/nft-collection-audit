@@ -15,7 +15,8 @@ The replacement brief superseded the earlier local-only brief on this date.
 - `python examples/run_demo.py` regenerates
   `examples/output/scorecards.md`. It contains all three cards and 12 tracker
   targets, with the exact synthetic marker inside the outputs and the research
-  disclaimer beside every gate score. Regeneration leaves the sample unchanged.
+  disclaimer beside every gate score. Export explicitly writes LF; regeneration
+  leaves both the sample content and the clean clone's Git status unchanged.
 - Fixture scores are 9.78, 6.95, and 0.22. The increasing tracker series spans
   +1.07% through +93.88%; dates, prices, and source records are all fictional.
 - The actual disclosure regression/fix has recorded before/after results in
@@ -30,7 +31,8 @@ The replacement brief superseded the earlier local-only brief on this date.
 - Local commits record actual work on 24 October with Git-generated timestamps;
   no commit dates were overridden. The initial commit honestly imports an
   existing verified implementation. Later commits record new tests, the fix,
-  CI/checks, refreshed fixtures/sample, and publication documentation.
+  CI/checks, refreshed fixtures/sample, and publication documentation. A seventh
+  real fix addresses the Windows newline issue found during the clean-clone check.
 
 ## Pending external or future checks
 

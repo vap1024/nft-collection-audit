@@ -184,6 +184,7 @@ def test_demo_runs_outside_project_and_saves_identical_report(tmp_path):
         encoding="utf-8",
     )
     assert destination.read_text(encoding="utf-8") == completed.stdout
+    assert destination.read_bytes() == completed.stdout.encode("utf-8")
     assert completed.stdout.count("/10 - CANDIDATE") == 1
     assert completed.stdout.count("/10 - REJECTED") == 2
     assert "| 30d |" in completed.stdout
