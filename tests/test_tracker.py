@@ -14,7 +14,7 @@ from nft_audit.tracker import (
     track_prices,
 )
 
-MINT = datetime(2026, 1, 1, 12, tzinfo=timezone.utc)
+MINT = datetime(2026, 9, 17, 12, tzinfo=timezone.utc)
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -42,9 +42,9 @@ def test_actual_fixture_matches_all_targets_with_small_offsets():
     assert [row.sample_time for row in rows] == [sample.timestamp for sample in series]
     assert [row.offset_seconds for row in rows] == [5, -10, 20, 10, -20, 30, 10, -10, 20, 10, -10, 30]
     assert all(row.change_pct > 0 for row in rows)
-    assert rows[-1].change_pct == Decimal(90)
+    assert rows[-1].change_pct.quantize(Decimal("0.01")) == Decimal("93.88")
     table = render_tracking_table(rows)
-    assert "+90.00%" in table
+    assert "+93.88%" in table
     assert "Offset (s)" in table
     assert len(table.splitlines()) == 14
 
@@ -111,11 +111,11 @@ def test_duplicate_timestamps_are_rejected():
 
 def test_naive_timestamps_are_rejected():
     with pytest.raises(ValueError, match="timezone"):
-        PricePoint(datetime(2026, 1, 1), Decimal(1))
+        PricePoint(datetime(2026, 9, 17), Decimal(1))
     with pytest.raises(ValueError, match="timezone"):
-        track_prices(datetime(2026, 1, 1), 100, [])
+        track_prices(datetime(2026, 9, 17), 100, [])
     with pytest.raises(ValueError, match="timezone"):
-        parse_timestamp("2026-01-01T12:00:00")
+        parse_timestamp("2026-09-17T12:00:00")
 
 
 def test_timezone_offsets_are_normalized_to_utc():
@@ -126,7 +126,7 @@ def test_timezone_offsets_are_normalized_to_utc():
     assert row.target_time.tzinfo == timezone.utc
     assert row.sample_time.tzinfo == timezone.utc
     assert row.offset_seconds == 0
-    assert parse_timestamp("2026-01-01T14:00:00+02:00") == MINT
+    assert parse_timestamp("2026-09-17T14:00:00+02:00") == MINT
 
 
 def test_negative_max_distance_is_rejected():

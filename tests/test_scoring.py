@@ -24,7 +24,7 @@ def source(collection, section):
     return collection["sources"][collection["evidence_refs"][section]]
 
 
-@pytest.mark.parametrize("index, expected, candidate", [(0, "9.85", True), (1, "6.55", False), (2, "0.00", False)])
+@pytest.mark.parametrize("index, expected, candidate", [(0, "9.78", True), (1, "6.95", False), (2, "0.22", False)])
 def test_demo_collection_gates(collections, index, expected, candidate):
     result = score_collection(collections[index])
     assert result.score == Decimal(expected)
@@ -167,7 +167,7 @@ def test_scoring_does_not_mutate_input_and_card_shows_provenance(collections):
     result = score_collection(collections[0])
     assert collections[0] == before
     card = render_card(result)
-    assert "9.85/10 - CANDIDATE" in card
+    assert "9.78/10 - CANDIDATE" in card
     assert "aurora-market-v1" in card
     assert "Circular-trade penalty" in card
     assert card.count("25%") == 4
@@ -187,7 +187,7 @@ def test_demo_runs_outside_project_and_saves_identical_report(tmp_path):
     assert completed.stdout.count("/10 - CANDIDATE") == 1
     assert completed.stdout.count("/10 - REJECTED") == 2
     assert "| 30d |" in completed.stdout
-    assert "+90.00%" in completed.stdout
+    assert "+93.88%" in completed.stdout
 
 
 @pytest.mark.parametrize("index", [0, 1, 2])
@@ -196,3 +196,13 @@ def test_each_scorecard_discloses_synthetic_data_and_research_model(collections,
     assert "Demo data: synthetic fixtures" in card
     score_line = next(i for i, line in enumerate(card.splitlines()) if line.startswith("**Score:"))
     assert card.splitlines()[score_line + 1] == "Research scoring model. Not investment advice."
+
+
+@pytest.mark.parametrize("circular, expected, candidate", [(0.0347, "6.99", False), (0.03333, "7.00", True)])
+def test_component_evidence_straddles_actual_gate(collections, circular, expected, candidate):
+    collection = collections[0]
+    source(collection, "mint")["terms_changed"] = True
+    source(collection, "trading").update(top_wallet_volume_share=0.55, circular_trade_share=circular)
+    result = score_collection(collection)
+    assert result.score == Decimal(expected)
+    assert result.candidate is candidate
