@@ -1,0 +1,95 @@
+[
+  {
+    "id": "synthetic-aurora-gardens",
+    "name": "Aurora Gardens (strong fixture)",
+    "synthetic": true,
+    "claims": {"high_liquidity": true, "volume_24h": 2400},
+    "evidence_refs": {
+      "market": "aurora-market-v1",
+      "mint": "aurora-terms-v1",
+      "trading": "aurora-trades-v1",
+      "contract": "aurora-review-v1"
+    },
+    "sources": {
+      "aurora-market-v1": {
+        "kind": "market_snapshot", "synthetic": true,
+        "floor_price": 1.2, "volume_24h": 2400
+      },
+      "aurora-terms-v1": {
+        "kind": "mint_terms", "synthetic": true,
+        "price": 1.0, "stages": 2, "allowlist": true,
+        "terms_disclosed": true, "terms_changed": false
+      },
+      "aurora-trades-v1": {
+        "kind": "trade_summary", "synthetic": true,
+        "top_wallet_volume_share": 0.18, "circular_trade_share": 0.02
+      },
+      "aurora-review-v1": {
+        "kind": "contract_review", "synthetic": true,
+        "source_verified": true, "mint_method": "seadrop"
+      }
+    }
+  },
+  {
+    "id": "synthetic-mist-arcade",
+    "name": "Mist Arcade (gray fixture)",
+    "synthetic": true,
+    "claims": {"high_liquidity": false, "volume_24h": 900},
+    "evidence_refs": {
+      "market": "mist-market-v1",
+      "mint": "mist-terms-v1",
+      "trading": "mist-trades-v1",
+      "contract": "mist-review-v1"
+    },
+    "sources": {
+      "mist-market-v1": {
+        "kind": "market_snapshot", "synthetic": true,
+        "floor_price": 0.8, "volume_24h": 900
+      },
+      "mist-terms-v1": {
+        "kind": "mint_terms", "synthetic": true,
+        "price": 0.6, "stages": 3, "allowlist": false,
+        "terms_disclosed": true, "terms_changed": true
+      },
+      "mist-trades-v1": {
+        "kind": "trade_summary", "synthetic": true,
+        "top_wallet_volume_share": 0.6, "circular_trade_share": 0.06
+      },
+      "mist-review-v1": {
+        "kind": "contract_review", "synthetic": true,
+        "source_verified": true, "mint_method": "standard"
+      }
+    }
+  },
+  {
+    "id": "synthetic-paper-comets",
+    "name": "Paper Comets (scam fixture)",
+    "synthetic": true,
+    "claims": {"high_liquidity": true, "volume_24h": 24000},
+    "evidence_refs": {
+      "market": "comets-market-v1",
+      "mint": "comets-terms-v1",
+      "trading": "comets-trades-v1",
+      "contract": "comets-review-v1"
+    },
+    "sources": {
+      "comets-market-v1": {
+        "kind": "market_snapshot", "synthetic": true,
+        "floor_price": null, "volume_24h": null
+      },
+      "comets-terms-v1": {
+        "kind": "mint_terms", "synthetic": true,
+        "price": null, "stages": null, "allowlist": null,
+        "terms_disclosed": false, "terms_changed": true
+      },
+      "comets-trades-v1": {
+        "kind": "trade_summary", "synthetic": true,
+        "top_wallet_volume_share": 0.94, "circular_trade_share": 0.65
+      },
+      "comets-review-v1": {
+        "kind": "contract_review", "synthetic": true,
+        "source_verified": false, "mint_method": "opaque"
+      }
+    }
+  }
+]
