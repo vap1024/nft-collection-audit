@@ -188,3 +188,11 @@ def test_demo_runs_outside_project_and_saves_identical_report(tmp_path):
     assert completed.stdout.count("/10 - REJECTED") == 2
     assert "| 30d |" in completed.stdout
     assert "+90.00%" in completed.stdout
+
+
+@pytest.mark.parametrize("index", [0, 1, 2])
+def test_each_scorecard_discloses_synthetic_data_and_research_model(collections, index):
+    card = render_card(score_collection(collections[index]))
+    assert "Demo data: synthetic fixtures" in card
+    score_line = next(i for i, line in enumerate(card.splitlines()) if line.startswith("**Score:"))
+    assert card.splitlines()[score_line + 1] == "Research scoring model. Not investment advice."
