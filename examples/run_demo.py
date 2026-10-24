@@ -1,4 +1,4 @@
-"""Print three audit cards and a price-tracking table; optionally save Markdown."""
+"""Generate three synthetic audit cards and a retrospective price-tracking table."""
 
 import argparse
 import json
@@ -24,10 +24,15 @@ def build_report() -> str:
     if matching.features.mint_price != mint_price:
         raise ValueError("tracker baseline must match the primary mint terms")
     rows = track_prices(mint_time, mint_price, prices)
-    parts = ["# Synthetic NFT collection audit", "All prices use fictional DEMO units."]
+    parts = [
+        "# Synthetic NFT collection audit",
+        "Demo data: synthetic fixtures",
+        "All prices use fictional DEMO units.",
+    ]
     parts.extend(render_card(result) for result in results)
     parts.extend([
         "## Post-mint price tracker",
+        "Demo data: synthetic fixtures",
         f"Collection: `{payload['collection_id']}`. Mint price: {mint_price:.4f} DEMO.",
         "Nearest post-mint samples; positive offsets mean observations after the target time.",
         render_tracking_table(rows, currency=payload["currency"]),
@@ -37,12 +42,15 @@ def build_report() -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, help="also save the full Markdown report to this local path")
+    parser.add_argument(
+        "--output", type=Path,
+        default=PROJECT_ROOT / "examples" / "output" / "scorecards.md",
+        help="save Markdown here (default: examples/output/scorecards.md in the project)",
+    )
     args = parser.parse_args()
     report = build_report()
-    if args.output is not None:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(report, encoding="utf-8")
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(report, encoding="utf-8")
     print(report, end="")
     return 0
 
